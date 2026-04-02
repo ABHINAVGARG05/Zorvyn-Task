@@ -9,6 +9,6 @@ export const env = {
   DB_USER: process.env.DB_USER || "postgres",
   DB_PASSWORD: process.env.DB_PASSWORD,
 
-  JWT_SECRET: process.env.JWT_SECRET || "zyovron" ,
-  JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN
+  JWT_SECRET: process.env.JWT_SECRET as string,
+  JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN || "7d",
 };
