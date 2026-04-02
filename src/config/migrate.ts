@@ -6,8 +6,9 @@ import logger from '../utils/logger'
 
 const run = async () => {
   const migrationDir = path.join(process.cwd(), 'migrations')
-  const files = fs.readdirSync(migrationDir).sort()
-
+  const files = fs.readdirSync(migrationDir)
+    .filter((file) => file.endsWith('.sql'))
+    .sort()
   for (const file of files) {
     const sql = fs.readFileSync(path.join(migrationDir, file), 'utf8')
     await pool.query(sql)
@@ -19,6 +20,6 @@ const run = async () => {
 }
 
 run().catch((err) => {
-  logger.info(`Migration failed:, ${err}`)
+  logger.error(`Migration failed: ${err}`)
   process.exit(1)
 })
