@@ -6,6 +6,9 @@ import { MESSAGES } from "./constants/messages";
 import pool from "./config/db";
 import logger from "./utils/logger";
 
+import authRouter from './modules/auth/auth.routes'
+
+
 const app: Express = express();
 
 app.use(express.json());
@@ -32,5 +35,7 @@ app.get("/db-health", async (req: Request, res: Response) => {
     });
   }
 });
+
+app.use('/auth', authRouter)
 
 export default app;

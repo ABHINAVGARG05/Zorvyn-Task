@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { registerUser, loginUser } from "./auth.service";
 import { sendSuccess, sendError } from "../../utils/response";
 import { MESSAGES } from "../../constants/messages";
+import logger from "../../utils/logger";
 
 export const register = async (req: Request, res: Response) => {
   try {
@@ -44,6 +45,7 @@ export const login = async (req: Request, res: Response) => {
         code: "ACCOUNT_INACTIVE",
       });
     }
+    logger.error(error);
     sendError(res, { message: MESSAGES.COMMON.INTERNAL_ERROR });
   }
 };
