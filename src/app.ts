@@ -8,6 +8,8 @@ import logger from "./utils/logger";
 
 import authRouter from './modules/auth/auth.routes'
 import userRouter from './modules/users/user.routes'
+import recordRouter from './modules/records/record.routes'
+
 
 const app: Express = express();
 
@@ -38,6 +40,7 @@ app.get("/db-health", async (req: Request, res: Response) => {
 
 app.use('/auth', authRouter)
 app.use('/users', userRouter)
+app.use('/records', recordRouter)
 
 
 export default app;
