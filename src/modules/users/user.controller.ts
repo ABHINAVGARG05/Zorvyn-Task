@@ -15,7 +15,7 @@ export const getUsers = async (req: AuthRequest, res: Response) => {
 
 export const updateRole = async (req: AuthRequest, res: Response) => {
   try {
-     const userId  = req.params.id as string
+    const userId = req.params.id as string;
     const user = await updateUserRole(userId, req.body.role);
     sendSuccess(res, { message: MESSAGES.COMMON.SUCCESS, data: user });
   } catch (error) {
@@ -32,7 +32,7 @@ export const updateRole = async (req: AuthRequest, res: Response) => {
 
 export const updateStatus = async (req: AuthRequest, res: Response) => {
   try {
-    const userId = req.params.is as string
+    const userId = req.params.id as string;
     const user = await updateUserStatus(userId, req.body.status);
     sendSuccess(res, { message: MESSAGES.COMMON.SUCCESS, data: user });
   } catch (error) {

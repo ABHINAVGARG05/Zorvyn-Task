@@ -69,7 +69,7 @@ export const update = async (req: AuthRequest, res: Response) => {
 
 export const remove = async (req: AuthRequest, res: Response) => {
   try {
-    const userId = req.params.is as string
+    const userId = req.params.id as string
     await deleteRecord(userId);
     sendSuccess(res, { message: "Record deleted successfully", data: null });
   } catch (error) {
