@@ -19,6 +19,7 @@ RUN pnpm install --prod
 
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/migrations ./migrations
+COPY --from=builder /app/docs ./docs 
 
 EXPOSE 3000
 

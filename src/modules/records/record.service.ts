@@ -3,6 +3,7 @@ import pool from "../../config/db";
 interface RecordFilters {
   type?: string;
   category?: string;
+  notes?: string;
   from?: string;
   to?: string;
   page?: number;
@@ -30,7 +31,7 @@ export const createRecord = async (
 };
 
 export const getRecords = async (filters: RecordFilters) => {
-  const { type, category, from, to, page = 1, limit = 10 } = filters;
+  const { type, category, notes, from, to, page = 1, limit = 10 } = filters;
   const offset = (page - 1) * limit;
 
   const conditions: string[] = ["deleted_at IS NULL"];
@@ -44,6 +45,10 @@ export const getRecords = async (filters: RecordFilters) => {
   if (category) {
     conditions.push(`category ILIKE $${i++}`);
     params.push(`%${category}%`);
+  }
+  if (notes) {
+    conditions.push(`notes ILIKE $${i++}`);
+    params.push(`%${notes}%`);
   }
   if (from) {
     conditions.push(`date >= $${i++}`);
