@@ -1,8 +1,13 @@
 import { Pool } from "pg";
 import { env } from "../constants/constant";
 
+const resolvedHost =
+  process.env.NODE_ENV === "test" && env.DB_HOST === "postgres"
+    ? "localhost"
+    : env.DB_HOST;
+
 const pool = new Pool({
-  host: env.DB_HOST,
+  host: resolvedHost,
   port: env.DB_PORT,
   database: env.DB_NAME,
   user: env.DB_USER,
