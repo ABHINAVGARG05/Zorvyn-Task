@@ -7,7 +7,7 @@ import pool from "./config/db";
 import logger from "./utils/logger";
 
 import authRouter from './modules/auth/auth.routes'
-
+import userRouter from './modules/users/user.routes'
 
 const app: Express = express();
 
@@ -37,5 +37,7 @@ app.get("/db-health", async (req: Request, res: Response) => {
 });
 
 app.use('/auth', authRouter)
+app.use('/users', userRouter)
+
 
 export default app;
