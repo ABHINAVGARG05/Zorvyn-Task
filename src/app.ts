@@ -1,7 +1,6 @@
 import express, { type Express } from "express";
 import { Request, Response } from "express";
-import fs from "fs";
-import path from "path";
+import { getOpenApiDocument } from "./openapi";
 
 import { sendSuccess, sendError } from "./utils/response";
 import { MESSAGES } from "./constants/messages";
@@ -49,22 +48,10 @@ app.use("/dashboard", dashboardRouter);
 
 app.get("/api/spec.json", (req: Request, res: Response) => {
   try {
-    const specPath = path.join(process.cwd(), "docs", "openapi.json");
-
-    if (!fs.existsSync(specPath)) {
-      logger.error(`OpenAPI spec not found at: ${specPath}`);
-      sendError(res, {
-        message: "OpenAPI spec file not found",
-        statusCode: 404,
-        code: "SPEC_NOT_FOUND",
-      });
-      return;
-    }
-
-    const spec = JSON.parse(fs.readFileSync(specPath, "utf-8"));
+    const spec = getOpenApiDocument();
     res.json(spec);
   } catch (error) {
-    logger.error(`Failed to load OpenAPI spec: ${error}`);
+    logger.error(`Failed to generate OpenAPI spec: ${error}`);
     sendError(res, {
       message: MESSAGES.COMMON.INTERNAL_ERROR,
       statusCode: 500,
