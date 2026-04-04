@@ -37,10 +37,14 @@ export const recordFilterSchema = z.object({
   notes: z.string().min(1).max(500).optional(),
   from: dateString.optional(),
   to: dateString.optional(),
-  page: numberFromQuery.optional().refine((v) => (v ?? 1) > 0 && (v ?? 1) < 1000, {
-    message: "page must be between 1 and 999",
-  }),
-  limit: numberFromQuery.optional().refine((v) => (v ?? 10) > 0 && (v ?? 10) < 101, {
-    message: "limit must be between 1 and 100",
-  }),
+  page: numberFromQuery
+    .optional()
+    .refine((v) => (v ?? 1) > 0 && (v ?? 1) < 1000, {
+      message: "page must be between 1 and 999",
+    }),
+  limit: numberFromQuery
+    .optional()
+    .refine((v) => (v ?? 10) > 0 && (v ?? 10) < 101, {
+      message: "limit must be between 1 and 100",
+    }),
 });

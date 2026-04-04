@@ -13,7 +13,9 @@ export const dashboardFilterSchema = z.object({
   from: dateString.optional(),
   to: dateString.optional(),
   period: z.enum(["month", "week"]).optional(),
-  limit: numberFromQuery.optional().refine((v) => (v ?? 10) > 0 && (v ?? 10) < 101, {
-    message: "limit must be between 1 and 100",
-  }),
+  limit: numberFromQuery
+    .optional()
+    .refine((v) => (v ?? 10) > 0 && (v ?? 10) < 101, {
+      message: "limit must be between 1 and 100",
+    }),
 });

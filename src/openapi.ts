@@ -10,7 +10,11 @@ import {
   updateRecordSchema,
   recordFilterSchema,
 } from "./schemas/records";
-import { userListSchema, updateRoleSchema, updateStatusSchema } from "./schemas/users";
+import {
+  userListSchema,
+  updateRoleSchema,
+  updateStatusSchema,
+} from "./schemas/users";
 import { dashboardFilterSchema } from "./schemas/dashboard";
 import { idParamSchema } from "./schemas/common";
 

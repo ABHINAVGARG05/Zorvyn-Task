@@ -5,9 +5,11 @@ import { MESSAGES } from "../constants/messages";
 
 const formatZodError = (error: unknown) => {
   if (error && typeof error === "object" && "issues" in error) {
-    const issues = (error as {
-      issues: Array<{ path: (string | number)[]; message: string }>;
-    }).issues;
+    const issues = (
+      error as {
+        issues: Array<{ path: (string | number)[]; message: string }>;
+      }
+    ).issues;
     return issues.map((issue) => ({
       field: issue.path.join("."),
       message: issue.message,
