@@ -91,8 +91,8 @@ describe("DashboardService", () => {
     it("should return monthly trends", async () => {
       mockQuery.mockResolvedValueOnce({
         rows: [
-          { month: "2026-04", total_income: "5000", total_expenses: "2000", net_balance: "3000" },
-          { month: "2026-03", total_income: "4000", total_expenses: "1500", net_balance: "2500" },
+          { period: "2026-04", total_income: "5000", total_expenses: "2000", net_balance: "3000" },
+          { period: "2026-03", total_income: "4000", total_expenses: "1500", net_balance: "2500" },
         ],
       })
 
@@ -100,20 +100,20 @@ describe("DashboardService", () => {
 
       expect(Array.isArray(result)).toBe(true)
       expect(result).toHaveLength(2)
-      expect(result[0].month).toBe("2026-04")
+      expect(result[0].period).toBe("2026-04")
     })
 
     it("should return most recent month first", async () => {
       mockQuery.mockResolvedValueOnce({
         rows: [
-          { month: "2026-04", total_income: "5000", total_expenses: "2000", net_balance: "3000" },
-          { month: "2026-03", total_income: "4000", total_expenses: "1500", net_balance: "2500" },
+          { period: "2026-04", total_income: "5000", total_expenses: "2000", net_balance: "3000" },
+          { period: "2026-03", total_income: "4000", total_expenses: "1500", net_balance: "2500" },
         ],
       })
 
       const result = await getTrends()
 
-      expect(result[0].month > result[1].month).toBe(true)
+      expect(result[0].period > result[1].period).toBe(true)
     })
 
     it("should return empty array if no records", async () => {
