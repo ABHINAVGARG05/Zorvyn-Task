@@ -1,5 +1,10 @@
 import { Request, Response } from "express";
-import { registerUser, loginUser } from "./auth.service";
+import {
+  registerUser,
+  loginUser,
+  refreshAuthToken,
+  revokeRefreshToken,
+} from "./auth.service";
 import { sendSuccess, sendError } from "../../utils/response";
 import { MESSAGES } from "../../constants/messages";
 import logger from "../../utils/logger";
@@ -43,6 +48,56 @@ export const login = async (req: Request, res: Response) => {
         message: "Account is inactive",
         statusCode: 403,
         code: "ACCOUNT_INACTIVE",
+      });
+    }
+    logger.error(error);
+    sendError(res, { message: MESSAGES.COMMON.INTERNAL_ERROR });
+  }
+};
+
+export const refresh = async (req: Request, res: Response) => {
+  try {
+    const { refreshToken } = req.body;
+    const data = await refreshAuthToken(refreshToken);
+    sendSuccess(res, { message: MESSAGES.AUTH.LOGIN_SUCCESS, data });
+  } catch (error) {
+    if (error instanceof Error && error.message === "REFRESH_REVOKED") {
+      return sendError(res, {
+        message: "Refresh token revoked",
+        statusCode: 401,
+        code: "REFRESH_REVOKED",
+      });
+    }
+    if (error instanceof Error && error.message === "REFRESH_EXPIRED") {
+      return sendError(res, {
+        message: "Refresh token expired",
+        statusCode: 401,
+        code: "REFRESH_EXPIRED",
+      });
+    }
+    if (error instanceof Error && error.message === "REFRESH_INVALID") {
+      return sendError(res, {
+        message: "Refresh token invalid",
+        statusCode: 401,
+        code: "REFRESH_INVALID",
+      });
+    }
+    logger.error(error);
+    sendError(res, { message: MESSAGES.COMMON.INTERNAL_ERROR });
+  }
+};
+
+export const logout = async (req: Request, res: Response) => {
+  try {
+    const { refreshToken } = req.body;
+    await revokeRefreshToken(refreshToken);
+    sendSuccess(res, { message: MESSAGES.COMMON.SUCCESS });
+  } catch (error) {
+    if (error instanceof Error && error.message === "REFRESH_INVALID") {
+      return sendError(res, {
+        message: "Refresh token invalid",
+        statusCode: 401,
+        code: "REFRESH_INVALID",
       });
     }
     logger.error(error);

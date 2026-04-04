@@ -4,7 +4,7 @@ import {
   OpenApiGeneratorV3,
   extendZodWithOpenApi,
 } from "@asteasolutions/zod-to-openapi";
-import { registerSchema, loginSchema } from "./schemas/auth";
+import { registerSchema, loginSchema, refreshSchema } from "./schemas/auth";
 import {
   createRecordSchema,
   updateRecordSchema,
@@ -125,6 +125,7 @@ registry.registerPath({
             message: z.string(),
             data: z.object({
               token: z.string(),
+              refreshToken: z.string(),
               user: UserSchema,
             }),
           }),
@@ -141,6 +142,78 @@ registry.registerPath({
     },
     403: {
       description: "Account inactive",
+      content: { "application/json": { schema: ErrorResponse } },
+    },
+    500: {
+      description: "Internal server error",
+      content: { "application/json": { schema: ErrorResponse } },
+    },
+  },
+});
+
+registry.registerPath({
+  method: "post",
+  path: "/auth/refresh",
+  request: {
+    body: {
+      content: {
+        "application/json": {
+          schema: refreshSchema,
+        },
+      },
+    },
+  },
+  responses: {
+    200: {
+      description: "Token refreshed",
+      content: {
+        "application/json": {
+          schema: z.object({
+            success: z.boolean(),
+            message: z.string(),
+            data: z.object({
+              token: z.string(),
+              refreshToken: z.string(),
+            }),
+          }),
+        },
+      },
+    },
+    400: {
+      description: "Validation error",
+      content: { "application/json": { schema: ErrorResponse } },
+    },
+    401: {
+      description: "Refresh token invalid or expired",
+      content: { "application/json": { schema: ErrorResponse } },
+    },
+    500: {
+      description: "Internal server error",
+      content: { "application/json": { schema: ErrorResponse } },
+    },
+  },
+});
+
+registry.registerPath({
+  method: "post",
+  path: "/auth/logout",
+  request: {
+    body: {
+      content: {
+        "application/json": {
+          schema: refreshSchema,
+        },
+      },
+    },
+  },
+  responses: {
+    200: { description: "Logged out" },
+    400: {
+      description: "Validation error",
+      content: { "application/json": { schema: ErrorResponse } },
+    },
+    401: {
+      description: "Refresh token invalid",
       content: { "application/json": { schema: ErrorResponse } },
     },
     500: {
