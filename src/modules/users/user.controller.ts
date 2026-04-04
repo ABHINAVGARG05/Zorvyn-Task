@@ -6,8 +6,14 @@ import { MESSAGES } from "../../constants/messages";
 
 export const getUsers = async (req: AuthRequest, res: Response) => {
   try {
-    const users = await getAllUsers();
-    sendSuccess(res, { message: MESSAGES.COMMON.SUCCESS, data: users });
+    const page = req.query.page ? parseInt(req.query.page as string) : 1;
+    const limit = req.query.limit ? parseInt(req.query.limit as string) : 10;
+    const result = await getAllUsers(page, limit);
+    sendSuccess(res, {
+      message: MESSAGES.COMMON.SUCCESS,
+      data: result.users,
+      meta: result.pagination,
+    });
   } catch {
     sendError(res, { message: MESSAGES.COMMON.INTERNAL_ERROR });
   }
