@@ -570,6 +570,6 @@ export const getOpenApiDocument = (): ReturnType<
       title: "Finance Data Processing and Access Control Backend",
       version: "1.0.0",
     },
-    servers: [{ url: "http://localhost:3000" }],
+    servers: [{ url: "https://zorvyn-task.abhinavgarg.in" }],
   });
 };

@@ -31,6 +31,7 @@ services:
       DB_USER: postgres
       DB_PASSWORD: ""
       JWT_SECRET: ${JWT_SECRET:?JWT_SECRET is required}
+      CORS_ORIGIN: "http://localhost:3000,https://zorvyn-task.abhinavgarg.in"
     ports:
       - "3000:3000"
 

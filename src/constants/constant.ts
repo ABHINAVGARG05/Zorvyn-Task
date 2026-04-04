@@ -16,4 +16,8 @@ export const env = {
   JWT_REFRESH_EXPIRES_IN_MS: Number(
     process.env.JWT_REFRESH_EXPIRES_IN_MS || 1000 * 60 * 60 * 24 * 30,
   ),
+
+  CORS_ORIGIN:
+    process.env.CORS_ORIGIN ||
+    "http://localhost:3000,https://zorvyn-task.abhinavgarg.in",
 };

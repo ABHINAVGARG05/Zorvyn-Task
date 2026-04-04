@@ -1,10 +1,12 @@
 import express, { type Express } from "express";
 import { Request, Response } from "express";
+import cors from "cors";
 import { getOpenApiDocument } from "./openapi";
 
 import { sendSuccess, sendError } from "./utils/response";
 import { MESSAGES } from "./constants/messages";
 import pool from "./config/db";
+import { env } from "./constants/constant";
 import logger from "./utils/logger";
 import { rateLimiter } from "./middlewares/rateLimiter";
 
@@ -14,6 +16,22 @@ import recordRouter from "./modules/records/record.routes";
 import dashboardRouter from "./modules/dashboard/dashboard.routes";
 
 const app: Express = express();
+
+const allowedOrigins = (env.CORS_ORIGIN || "http://localhost:3000")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+      return callback(new Error("Not allowed by CORS"));
+    },
+    credentials: true,
+  }),
+);
 
 app.use(express.json());
 app.use(rateLimiter);
