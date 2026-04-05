@@ -130,7 +130,7 @@ OpenAPI source file:
 
 ## Validation and Error Handling
 
-Implemented with express-validator and standardized API responses.
+Implemented with Zod schemas (via validation middleware) and standardized API responses.
 
 Examples of error codes:
 
@@ -156,9 +156,22 @@ pnpm install
 
 ```env
 PORT=3000
-DATABASE_URL=postgresql://postgres:postgres@localhost:5432/finance_db
+
+# Database
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=finance_db
+DB_USER=postgres
+DB_PASSWORD=postgres
+
+# Auth
 JWT_SECRET=your-secret-key
-JWT_EXPIRES_IN=1d
+JWT_EXPIRES_IN=7d
+JWT_REFRESH_SECRET=your-refresh-secret
+JWT_REFRESH_EXPIRES_IN=30d
+
+# CORS
+CORS_ORIGIN=http://localhost:3000,https://zorvyn-task.abhinavgarg.in
 ```
 
 3. Run migrations:
